@@ -30,11 +30,4 @@ public class Product {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @NotNull(message = "Stock is required")
-    @PositiveOrZero(message = "Stock cannot be negative")
-    @Column(nullable = false)
-    private Integer stock;
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

@@ -1,48 +1,19 @@
 package com.ecommerce.monolith.product.service;
 
-import com.ecommerce.monolith.product.model.Product;
-import com.ecommerce.monolith.product.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.ecommerce.monolith.product.dto.CreateProductRequest;
+import com.ecommerce.monolith.product.dto.ProductDTO;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-public class ProductService {
+public interface ProductService {
 
-    private final ProductRepository repository;
+    List<ProductDTO> getAllProducts();
 
-    @Transactional(readOnly = true)
-    public List<Product> getAll() {
-        return repository.findAll();
-    }
+    ProductDTO getProductById(Long id);
 
-    @Transactional(readOnly = true)
-    public Product getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
-    }
+    ProductDTO createProduct(CreateProductRequest request);
 
-    public Product create(Product product) {
-        return repository.save(product);
-    }
+    ProductDTO updateProduct(Long id, CreateProductRequest request);
 
-    public Product update(Long id, Product details) {
-        Product product = getById(id);
-
-        product.setName(details.getName());
-        product.setDescription(details.getDescription());
-        product.setPrice(details.getPrice());
-        product.setStock(details.getStock());
-
-        return product; // save inutile si entité managed
-    }
-
-    public void delete(Long id) {
-        Product product = getById(id);
-        repository.delete(product);
-    }
+    void deleteProduct(Long id);
 }
